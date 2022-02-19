@@ -279,8 +279,10 @@ class MBox(Backend):
         try:
             str_to_datetime(message[self.DATE_FIELD])
         except InvalidDateError:
+            escaped_date = message[self.DATE_FIELD].encode('unicode-escape').decode('utf-8')
+            escaped_unixfrom = message['unixfrom'].encode('unicode-escape').decode('utf-8')
             logger.warning("Invalid date %s in message %s; ignoring",
-                           message[self.DATE_FIELD], message['unixfrom'])
+                           escaped_date, escaped_unixfrom)
             return False
 
         return True
